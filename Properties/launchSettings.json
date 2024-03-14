@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WritingAssistant (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WritingAssistant (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

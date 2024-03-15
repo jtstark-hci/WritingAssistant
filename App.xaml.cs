@@ -33,6 +33,7 @@ namespace WritingAssistant
         public App()
         {
             this.InitializeComponent();
+            this.RequestedTheme = ApplicationTheme.Light;
         }
 
         /// <summary>

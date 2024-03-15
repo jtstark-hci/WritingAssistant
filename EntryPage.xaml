@@ -10,9 +10,33 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled">
 
-    <Grid>
+    <StackPanel Orientation="Vertical">
 
-        <Button Click="Button_Click" Content="New Doc" HorizontalAlignment="Center" />
+        <Button Margin="20,20,5,5" Click="NewDoc_Click" Background="{ThemeResource AccentFillColorDefaultBrush}">
+            <StackPanel Orientation="Horizontal">
+                <FontIcon Glyph="&#xE710;" />
+                <TextBlock Margin="5" Text="Create new"/>
+            </StackPanel>
+        </Button>
 
-    </Grid>
+        <Button Margin="20,5,5,5" Click="Open_Click">
+            <StackPanel Orientation="Horizontal">
+                <FontIcon Glyph="&#xEC50;" />
+                <TextBlock Margin="5" Text="Open file"/>
+            </StackPanel>
+        </Button>
+
+
+        <TextBlock Text="Recent documents" Margin="30" Style="{StaticResource SubtitleTextBlockStyle}"/>
+        <StackPanel>
+            <!--put recent docs list here -->
+        </StackPanel>
+        
+        
+    </StackPanel>
+
+
+
+
+
 </Page>

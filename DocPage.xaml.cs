@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,12 @@ namespace WritingAssistant
         public DocPage()
         {
             this.InitializeComponent();
+            //this.RequestedTheme = ElementTheme.Light;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(EntryPage));
+            Frame.Navigate(typeof(EntryPage), null, new SuppressNavigationTransitionInfo());
         }
     }
 }

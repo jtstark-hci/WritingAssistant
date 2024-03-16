@@ -7,16 +7,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource SolidBackgroundFillColorBaseAltBrush}"
+    Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
     NavigationCacheMode="Enabled">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <MenuBar Grid.Row="0">
+        <MenuBar Grid.Row="0" Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}">
             <MenuBarItem Title="File">
                 <MenuFlyoutItem Text="New"/>
                 <MenuFlyoutItem Text="Open..."/>
@@ -35,29 +36,170 @@
                 <MenuFlyoutItem Text="About"/>
             </MenuBarItem>
         </MenuBar>
-        
-        
-        <ScrollView Grid.Row="1" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
 
-                <Rectangle Fill="White" Grid.Column="1" Grid.Row="1" Translation="0,0,32">
-                    <Rectangle.Shadow>
-                        <ThemeShadow />
-                    </Rectangle.Shadow>
-                </Rectangle>
 
-            </Grid>
-        </ScrollView>
+        <RelativePanel Grid.Row="1" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}">
+            <RelativePanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                </Style>
+            </RelativePanel.Resources>
+            <Button x:Name="openFileButton" Click="OpenButton_Click" AutomationProperties.Name="Open file" ToolTipService.ToolTip="Open file">
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8E5;"/>
+                </Button.Content>
+            </Button>
+            <Button Click="SaveButton_Click" AutomationProperties.Name="Save file" ToolTipService.ToolTip="Save file"
+            RelativePanel.RightOf="openFileButton">
+                <Button.Content>
+                    <FontIcon Glyph="&#xE74E;"/>
+                </Button.Content>
+            </Button>
+            <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"
+            RelativePanel.LeftOf="italicButton" >
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8DD;"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="italicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic"
+            RelativePanel.LeftOf="fontColorButton">
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8DB;"/>
+                </Button.Content>
+            </Button>
+
+            <DropDownButton x:Name="fontColorButton" AutomationProperties.Name="Font color"
+                                BorderThickness="0" ToolTipService.ToolTip="Font color"
+                                Background="Transparent"
+                                RelativePanel.AlignRightWithPanel="True">
+                <SymbolIcon Symbol="FontColor"/>
+                <DropDownButton.Flyout>
+                    <Flyout Placement="Bottom">
+                        <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
+                            <VariableSizedWrapGrid.Resources>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Width" Value="32"/>
+                                    <Setter Property="Height" Value="32"/>
+                                </Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="MinWidth" Value="0"/>
+                                    <Setter Property="MinHeight" Value="0"/>
+                                    <Setter Property="Margin" Value="6"/>
+                                </Style>
+                            </VariableSizedWrapGrid.Resources>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Red">
+                                <Button.Content>
+                                    <Rectangle Fill="Red"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Orange">
+                                <Button.Content>
+                                    <Rectangle Fill="Orange"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Yellow">
+                                <Button.Content>
+                                    <Rectangle Fill="Yellow"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Green">
+                                <Button.Content>
+                                    <Rectangle Fill="Green"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Blue">
+                                <Button.Content>
+                                    <Rectangle Fill="Blue"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Indigo">
+                                <Button.Content>
+                                    <Rectangle Fill="Indigo"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Violet">
+                                <Button.Content>
+                                    <Rectangle Fill="Violet"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Gray">
+                                <Button.Content>
+                                    <Rectangle Fill="Gray"/>
+                                </Button.Content>
+                            </Button>
+                        </VariableSizedWrapGrid>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </RelativePanel>
+
+        <SplitView x:Name="splitView" Grid.Row="2" IsPaneOpen="False" DisplayMode="CompactInline" OpenPaneLength="256" CompactPaneLength="49" PanePlacement="Right">
+
+            <SplitView.Pane>
+                <StackPanel Padding="0">
+
+                    <Button Click="panelIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
+                        <RelativePanel>
+                            <TextBlock Text="Close panel" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15"/>
+                            <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="panelIcon"/>
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="panelIcon" Glyph="&#xE8A0;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
+                        </RelativePanel>
+                    </Button>
+
+                    <Button Click="asstIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
+                        <RelativePanel>
+                            <TextBlock Text="Notes from your assistant" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15"/>
+                            <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="asstIcon"/>
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="asstIcon" Glyph="&#xE99A;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
+                        </RelativePanel>
+                    </Button>
+
+                    <Button Click="charProfIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
+                        <RelativePanel>
+                            <TextBlock Text="Character profiles" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15" />
+                            <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="charIcon"/>
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="charIcon" Glyph="&#xE716;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True" />
+                        </RelativePanel>
+                    </Button>
+
+
+                </StackPanel>
+            </SplitView.Pane>
+            
+            
+            <ScrollView VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1024"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <RichEditBox Grid.Column="1" x:Name="editor" VerticalAlignment="Stretch" AutomationProperties.Name="Custom editor"
+                    Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+                    BorderThickness="0"
+                    TextChanged="Editor_TextChanged"
+                    GotFocus="Editor_GotFocus">
+
+                        <RichEditBox.Resources>
+                            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"/>
+                            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"/>
+                        </RichEditBox.Resources>
+
+                    </RichEditBox>
+                    
+                </Grid>
+
+
+
+
+            </ScrollView>
+        </SplitView>
+
     </Grid>
     
 </Page>

@@ -57,6 +57,6 @@ namespace WritingAssistant
             throw new Exception("Failed to load page " + e.SourcePageType.FullName);
         }
 
-        private Window m_window;
+        public static Window m_window;
     }
 }

@@ -13,7 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="64"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -57,6 +57,12 @@
                     <FontIcon Glyph="&#xE74E;"/>
                 </Button.Content>
             </Button>
+
+            <TextBlock Text="Untitled" x:Name="docTitle" RelativePanel.AlignHorizontalCenterWithPanel="True" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+            <Button AutomationProperties.Name="Edit title" ToolTipService.ToolTip="Edit title" Click="editTitle_Click" RelativePanel.RightOf="docTitle">
+                <FontIcon Glyph="&#xE70F;"/>
+            </Button>
+
             <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"
             RelativePanel.LeftOf="italicButton" >
                 <Button.Content>
@@ -143,25 +149,25 @@
 
                     <Button Click="panelIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
                         <RelativePanel>
-                            <TextBlock Text="Close panel" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15"/>
+                            <TextBlock Text="Close panel" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15" Style="{ThemeResource CaptionTextBlockStyle}"/>
                             <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="panelIcon"/>
-                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="panelIcon" Glyph="&#xE8A0;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="panelIcon" ToolTipService.ToolTip="Open/close panel" Glyph="&#xE8A0;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
                         </RelativePanel>
                     </Button>
 
-                    <Button Click="asstIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
+                    <Button Click="commentIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
                         <RelativePanel>
-                            <TextBlock Text="Notes from your assistant" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15"/>
-                            <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="asstIcon"/>
-                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="asstIcon" Glyph="&#xE99A;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
+                            <TextBlock Text="Assistant comments" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                            <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="commentIcon"/>
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="commentIcon" ToolTipService.ToolTip="Assistant comments" Glyph="&#xE90A;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True"/>
                         </RelativePanel>
                     </Button>
 
                     <Button Click="charProfIcon_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="48" Padding="0" Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
                         <RelativePanel>
-                            <TextBlock Text="Character profiles" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15" />
+                            <TextBlock Text="Character profiles" RelativePanel.AlignLeftWithPanel="True" HorizontalTextAlignment="Left" Margin="15" Style="{ThemeResource CaptionTextBlockStyle}"/>
                             <Rectangle Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" Stroke="LightGray" StrokeThickness="1" Width="47" Height="48" RadiusX="5" RadiusY="5" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="charIcon"/>
-                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="charIcon" Glyph="&#xE716;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True" />
+                            <FontIcon Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" x:Name="charIcon" ToolTipService.ToolTip="Character profiles" Glyph="&#xE716;" Width="47" Height="48" VerticalAlignment="Center" HorizontalAlignment="Right" RelativePanel.AlignRightWithPanel="True" />
                         </RelativePanel>
                     </Button>
 
@@ -181,9 +187,9 @@
 
                     <RichEditBox Grid.Column="1" x:Name="editor" VerticalAlignment="Stretch" AutomationProperties.Name="Custom editor"
                     Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
-                    BorderThickness="0"
                     TextChanged="Editor_TextChanged"
-                    GotFocus="Editor_GotFocus">
+                    GotFocus="Editor_GotFocus"
+                    PlaceholderText="Once upon a time...">
 
                         <RichEditBox.Resources>
                             <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"/>

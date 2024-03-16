@@ -35,22 +35,26 @@ namespace WritingAssistant
             //this.RequestedTheme = ElementTheme.Light;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(EntryPage), null, new SuppressNavigationTransitionInfo());
-        }
-
 
         private async void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             // Open a text file.
-            Windows.Storage.Pickers.FileOpenPicker open =
-                new Windows.Storage.Pickers.FileOpenPicker();
-            open.SuggestedStartLocation =
-                Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            open.FileTypeFilter.Add(".rtf");
+            FileOpenPicker opener = new FileOpenPicker();
 
-            Windows.Storage.StorageFile file = await open.PickSingleFileAsync();
+            var window = App.m_window;
+
+            // Retrieve the window handle (HWND) of the current WinUI 3 window.
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+
+            // Initialize the file picker with the window handle (HWND).
+            WinRT.Interop.InitializeWithWindow.Initialize(opener, hWnd);
+
+
+            opener.SuggestedStartLocation =
+                PickerLocationId.DocumentsLibrary;
+            opener.FileTypeFilter.Add(".rtf");
+
+            StorageFile file = await opener.PickSingleFileAsync();
 
             if (file != null)
             {
@@ -66,13 +70,23 @@ namespace WritingAssistant
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             FileSavePicker savePicker = new FileSavePicker();
+
+            var window = App.m_window;
+
+            // Retrieve the window handle (HWND) of the current WinUI 3 window.
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+
+            // Initialize the file picker with the window handle (HWND).
+            WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hWnd);
+
+
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
 
             // Dropdown of file types the user can save the file as
             savePicker.FileTypeChoices.Add("Rich Text", new List<string>() { ".rtf" });
 
             // Default file name if the user does not type one in or select a file to replace
-            savePicker.SuggestedFileName = "New Document";
+            savePicker.SuggestedFileName = docTitle.Text;
 
             StorageFile file = await savePicker.PickSaveFileAsync();
             if (file != null)
@@ -140,7 +154,7 @@ namespace WritingAssistant
             splitView.IsPaneOpen = true;
         }
 
-        private void asstIcon_Click (object sender, RoutedEventArgs e)
+        private void commentIcon_Click (object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = true;
         }
@@ -157,6 +171,11 @@ namespace WritingAssistant
                 splitView.IsPaneOpen = false;
                 panelIcon.Glyph = "\uE8A0";
             }
+
+        }
+
+        private void editTitle_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

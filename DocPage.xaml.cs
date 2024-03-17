@@ -18,6 +18,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,8 +33,24 @@ namespace WritingAssistant
         public DocPage()
         {
             this.InitializeComponent();
-            //this.RequestedTheme = ElementTheme.Light;
         }
+
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is StorageFile)
+            {
+                StorageFile file = (StorageFile)e.Parameter;
+
+                using (IRandomAccessStream randAccStream =
+                    await file.OpenAsync(FileAccessMode.Read))
+                {
+                    // Load the file into the Document property of the RichEditBox.
+                    editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
+                }
+            }
+        }
+
 
 
         private async void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -58,11 +75,11 @@ namespace WritingAssistant
 
             if (file != null)
             {
-                using (Windows.Storage.Streams.IRandomAccessStream randAccStream =
-                    await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                using (IRandomAccessStream randAccStream =
+                    await file.OpenAsync(FileAccessMode.Read))
                 {
                     // Load the file into the Document property of the RichEditBox.
-                    editor.Document.LoadFromStream(Microsoft.UI.Text.TextSetOptions.FormatRtf, randAccStream);
+                    editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
                 }
             }
         }
@@ -95,10 +112,10 @@ namespace WritingAssistant
                 // finish making changes and call CompleteUpdatesAsync.
                 CachedFileManager.DeferUpdates(file);
                 // write to file
-                using (Windows.Storage.Streams.IRandomAccessStream randAccStream =
-                    await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
+                using (IRandomAccessStream randAccStream =
+                    await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    editor.Document.SaveToStream(Microsoft.UI.Text.TextGetOptions.FormatRtf, randAccStream);
+                    editor.Document.SaveToStream(TextGetOptions.FormatRtf, randAccStream);
                 }
 
                 // Let Windows know that we're finished changing the file so the
@@ -128,12 +145,12 @@ namespace WritingAssistant
             // Extract the color of the button that was clicked.
             Button clickedColor = (Button)sender;
             var rectangle = (Microsoft.UI.Xaml.Shapes.Rectangle)clickedColor.Content;
-            var color = ((Microsoft.UI.Xaml.Media.SolidColorBrush)rectangle.Fill).Color;
+            var color = ((SolidColorBrush)rectangle.Fill).Color;
 
             editor.Document.Selection.CharacterFormat.ForegroundColor = color;
 
             fontColorButton.Flyout.Hide();
-            editor.Focus(Microsoft.UI.Xaml.FocusState.Keyboard);
+            editor.Focus(FocusState.Keyboard);
         }
 
 

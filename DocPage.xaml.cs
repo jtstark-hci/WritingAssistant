@@ -41,6 +41,7 @@ namespace WritingAssistant
             if (e.Parameter is StorageFile)
             {
                 StorageFile file = (StorageFile)e.Parameter;
+                docTitle.Text = file.DisplayName;
 
                 using (IRandomAccessStream randAccStream =
                     await file.OpenAsync(FileAccessMode.Read))
@@ -79,6 +80,7 @@ namespace WritingAssistant
                     await file.OpenAsync(FileAccessMode.Read))
                 {
                     // Load the file into the Document property of the RichEditBox.
+                    docTitle.Text = file.DisplayName;
                     editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
                 }
             }
@@ -191,9 +193,17 @@ namespace WritingAssistant
 
         }
 
-        private void editTitle_Click(object sender, RoutedEventArgs e)
+        private void TitleCancelButton_Click(object sender, RoutedEventArgs e)
         {
+            titleEditBox.Text = "";
+            editTitleFlyout.Hide();
+        }
 
+        private void TitleConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            docTitle.Text = titleEditBox.Text;
+            titleEditBox.Text = "";
+            editTitleFlyout.Hide();
         }
     }
 }

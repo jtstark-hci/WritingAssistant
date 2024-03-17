@@ -59,8 +59,28 @@
             </Button>
 
             <TextBlock Text="Untitled" x:Name="docTitle" RelativePanel.AlignHorizontalCenterWithPanel="True" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-            <Button AutomationProperties.Name="Edit title" ToolTipService.ToolTip="Edit title" Click="editTitle_Click" RelativePanel.RightOf="docTitle">
+            <Button AutomationProperties.Name="Edit title" ToolTipService.ToolTip="Edit title" RelativePanel.RightOf="docTitle">
                 <FontIcon Glyph="&#xE70F;"/>
+                <Button.Flyout>
+                    <Flyout x:Name="editTitleFlyout">
+                        <StackPanel>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Edit document title" Margin="0,0,0,12"/>
+                            <TextBox x:Name="titleEditBox" Width="256"></TextBox>
+                            <RelativePanel HorizontalAlignment="Stretch">
+                                <Button AutomationProperties.Name="Cancel" ToolTipService.ToolTip="Cancel" Click="TitleCancelButton_Click" RelativePanel.AlignLeftWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE711;"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button AutomationProperties.Name="Confirm" ToolTipService.ToolTip="Confirm" Click="TitleConfirmButton_Click" RelativePanel.AlignRightWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE73E;"/>
+                                    </Button.Content>
+                                </Button>
+                            </RelativePanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
             </Button>
 
             <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"

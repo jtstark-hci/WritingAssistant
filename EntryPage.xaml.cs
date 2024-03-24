@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,15 +29,24 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class EntryPage : Page
     {
+        List<StorageFile> filesList = new List<StorageFile>();
+        UserProject project;
+
+
         public EntryPage()
         {
             this.InitializeComponent();
-            //load recent projects here
+            
+            List<(int, string)> projects = App.GetProjectNames();
+            foreach ((int,string) project in projects)
+            {
+                ProjectLoadCard projCard = new ProjectLoadCard(project.Item2, project.Item1);
+                ProjectList.Children.Add(projCard);
+            }
         }
 
         private void NewProj_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(DocPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             CreateProjectArea.Visibility = Visibility.Visible;
         }
 
@@ -85,31 +95,32 @@ namespace WritingAssistant
 
             // Open the picker for the user to pick a file
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
+            
             if (files.Count > 0)
             {
                 StringBuilder output = new StringBuilder("");
                 foreach (StorageFile file in files)
                 {
                     output.Append(file.Name + "\n");
+                    filesList.Add(file);
                 }
                 FileNames.Text = output.ToString();
                 CreateButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                //nothing
+                Debug.WriteLine("filesList length: " + filesList.Count);
             }
 
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-
+            project = new UserProject(projNameEntry.Text, filesList);
+            Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void CreateFromScratchButton_Click(object sender, RoutedEventArgs e)
         {
-
+            project = new UserProject(projNameEntry.Text);
+            Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }

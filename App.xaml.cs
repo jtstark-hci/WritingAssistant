@@ -16,6 +16,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Newtonsoft.Json;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -49,7 +50,7 @@ namespace WritingAssistant
             rootFrame.NavigationFailed += onNavigationFailed;
             m_window.Content = rootFrame;
 
-            checkDirectory();
+            checkFillDirectory();
 
             rootFrame.Navigate(typeof(EntryPage), args.Arguments);
             m_window.Activate();
@@ -60,7 +61,7 @@ namespace WritingAssistant
             throw new Exception("Failed to load page " + e.SourcePageType.FullName);
         }
 
-        void checkDirectory()
+        void checkFillDirectory()
         {
             appDataPath = @"c:\writing_assistant_files";
             try
@@ -70,9 +71,13 @@ namespace WritingAssistant
                     DirectoryInfo di = Directory.CreateDirectory(appDataPath);
                     Debug.WriteLine(di.ToString());
 
-                    FileStream recent = File.Create(appDataPath + @"\recent.json");
-                    FileStream profiles = File.Create(appDataPath + @"\profiles.json");
-                    FileStream comments = File.Create(appDataPath + @"\comments.json");
+                    List<(int,string)> projectIds = new List<(int,string)>();
+                    File.WriteAllText(appDataPath + @"\projectIDs.json", JsonConvert.SerializeObject(projectIds));
+
+                    File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(new ProjectJson()));
+                    File.WriteAllText(appDataPath + @"\profiles.json", JsonConvert.SerializeObject(new ProfileJson()));
+                    File.WriteAllText(appDataPath + @"\comments.json", JsonConvert.SerializeObject(new CommentJson()));
+
 
                 }
             } catch (IOException e)
@@ -83,7 +88,62 @@ namespace WritingAssistant
 
         }
 
+        internal static void SaveNewProject(UserProject project)
+        {
+            string fileContents = File.ReadAllText(appDataPath + @"\projects.json");
+            ProjectJson contentObject = JsonConvert.DeserializeObject<ProjectJson>(fileContents);
+            project.Id = contentObject.next_id;
+            contentObject.projects.Add(project);
+            contentObject.next_id++;
+
+            File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(contentObject));
+
+            fileContents = File.ReadAllText(appDataPath + @"\projectIDs.json");
+            List<(int,string)> contentList = JsonConvert.DeserializeObject<List<(int,string)>>(fileContents);
+            contentList.Add((project.Id, project.Name));
+            File.WriteAllText(appDataPath + @"\projectIDs.json", JsonConvert.SerializeObject(contentList));
+
+        }
+
+        internal static void SaveProject(UserProject project)
+        {
+            //TO DO: overwrite project in projects.json
+        }
+
+        internal static List<(int,string)> GetProjectNames()
+        {
+            string fileContents = File.ReadAllText(appDataPath + @"\projectIDs.json");
+            List<(int, string)> contentList = JsonConvert.DeserializeObject<List<(int, string)>>(fileContents);
+            return contentList;
+        }
+
+
         public static Window m_window;
-        public static string appDataPath;
+        static string appDataPath;
+        internal static UserProject activeProject;
+
+        struct ProjectJson {
+
+            public ProjectJson() { }
+
+            public int next_id = 0;
+            public List<UserProject> projects = new List<UserProject>();
+        }
+
+        struct ProfileJson
+        {
+            public ProfileJson() { }
+
+            public int next_id = 0;
+            public List<Profile> profiles = new List<Profile>();
+        }
+
+        struct CommentJson
+        {
+            public CommentJson() { }
+
+            public int next_id = 0;
+            public List<Comment> comments = new List<Comment>();
+        }
     }
 }

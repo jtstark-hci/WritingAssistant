@@ -25,7 +25,7 @@
             </Button>
 
             <TextBlock Text="Recent projects" Margin="30,30,30,8" Style="{StaticResource SubtitleTextBlockStyle}"/>
-            <StackPanel>
+            <StackPanel x:Name="ProjectList">
                 <!--put recent projects list here -->
  
             </StackPanel>
@@ -43,7 +43,7 @@
             <StackPanel x:Name="browseArea" Visibility="Collapsed" Margin="0,24,0,0">
                 
                 <Button x:Name="BrowseButton" Content="Browse" Click="BrowseButton_Click" Margin="0,0,0,10"/>
-                <TextBlock x:Name="FileNames" TextWrapping="Wrap" Padding="20,5,0,0"/>
+                <TextBlock x:Name="FileNames" TextWrapping="Wrap" Padding="20,5,0,0" Margin="0,0,0,10"/>
                 <Button x:Name="CreateButton" Visibility="Collapsed" Click="CreateButton_Click" Content="Create" Background="{ThemeResource AccentFillColorDefaultBrush}" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"/>
 
             </StackPanel>

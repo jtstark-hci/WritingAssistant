@@ -11,6 +11,7 @@ using Windows.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -42,16 +43,25 @@ namespace WritingAssistant
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is StorageFile)
+            //update this so it puts all files into the list instead of opening all
+            if (e.Parameter is UserProject)
             {
-                StorageFile file = (StorageFile)e.Parameter;
-                docTitle.Text = file.DisplayName;
 
-                using (IRandomAccessStream randAccStream =
-                    await file.OpenAsync(FileAccessMode.Read))
+                Debug.WriteLine("parameter was a project");
+                UserProject project = (UserProject)e.Parameter;
+                App.activeProject = project;
+                App.SaveNewProject(project);
+
+                foreach(StorageFile file in project.StoryFiles)
                 {
-                    // Load the file into the Document property of the RichEditBox.
-                    editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
+                    Debug.WriteLine("found a file");
+                    using (IRandomAccessStream randAccStream =
+                        await file.OpenAsync(FileAccessMode.Read))
+                    {
+                        Debug.WriteLine("loading file");
+                        editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
+                        docTitle.Text = file.DisplayName;
+                    }
                 }
             }
         }
@@ -137,7 +147,7 @@ namespace WritingAssistant
                     await errorBox.ShowAsync();
                 } else
                 {
-                    //add file to recent list (if not already there)
+                    
                 }
             }
         }

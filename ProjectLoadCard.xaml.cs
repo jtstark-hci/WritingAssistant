@@ -21,16 +21,20 @@ namespace WritingAssistant
     public sealed partial class ProjectLoadCard : UserControl
     {
         public string project = "";
+        public int projectId = -1;
 
         public ProjectLoadCard()
         {
             this.InitializeComponent();
         }
 
-        public ProjectLoadCard(string projectName)
+        public ProjectLoadCard(string projectName, int projId)
         {
             this.InitializeComponent();
             this.project = projectName;
+            this.projectId = projId;
+
+            projName.Text = project;
         }
 
         private void projButton_Click(object sender, RoutedEventArgs e)

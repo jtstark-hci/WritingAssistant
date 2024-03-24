@@ -12,7 +12,7 @@
         <StackPanel Orientation="Horizontal" BorderThickness="1" HorizontalAlignment="Left">
 
             <FontIcon Glyph="&#xE838;" Margin="24,0,0,0" HorizontalAlignment="Left"/>
-            <TextBlock x:Name="projName" Margin="24,0,0,0" HorizontalAlignment="Left">Sample project</TextBlock>
+            <TextBlock x:Name="projName" Margin="24,0,0,0" HorizontalAlignment="Left"></TextBlock>
 
         </StackPanel>
     </Button>

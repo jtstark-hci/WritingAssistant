@@ -10,30 +10,53 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled">
 
-    <StackPanel Orientation="Vertical">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical">
 
-        <Button Margin="20,20,5,5" Click="NewDoc_Click" Background="{ThemeResource AccentFillColorDefaultBrush}">
-            <StackPanel Orientation="Horizontal">
-                <FontIcon Glyph="&#xE710;" />
-                <TextBlock Margin="5" Text="Create new"/>
+            <Button Margin="36,20,5,5" Click="NewProj_Click" Background="{ThemeResource AccentFillColorDefaultBrush}" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE710;" />
+                    <TextBlock Margin="5" Text="New project"/>
+                </StackPanel>
+            </Button>
+
+            <TextBlock Text="Recent projects" Margin="30,30,30,8" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <StackPanel>
+                <!--put recent projects list here -->
+ 
             </StackPanel>
-        </Button>
 
-        <Button Margin="20,5,5,5" Click="Open_Click">
-            <StackPanel Orientation="Horizontal">
-                <FontIcon Glyph="&#xEC50;" />
-                <TextBlock Margin="5" Text="Open file"/>
+        </StackPanel>
+
+        <StackPanel x:Name="CreateProjectArea" Margin="0,5,0,5" Padding="24,0,0,0" Grid.Column="1" Visibility="Collapsed" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}">
+            <TextBox Header="Project name" x:Name="projNameEntry" Width="512" Margin="0,36,0,0" HorizontalAlignment="Left"/>
+
+            <RadioButtons x:Name="filesOrNo" SelectionChanged="filesOrNo_SelectionChanged">
+                <RadioButton Content="Add story files" />
+                <RadioButton Content="Create from scratch" />
+            </RadioButtons>
+
+            <StackPanel x:Name="browseArea" Visibility="Collapsed" Margin="0,24,0,0">
+                
+                <Button x:Name="BrowseButton" Content="Browse" Click="BrowseButton_Click" Margin="0,0,0,10"/>
+                <TextBlock x:Name="FileNames" TextWrapping="Wrap" Padding="20,5,0,0"/>
+                <Button x:Name="CreateButton" Visibility="Collapsed" Click="CreateButton_Click" Content="Create" Background="{ThemeResource AccentFillColorDefaultBrush}" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"/>
+
             </StackPanel>
-        </Button>
 
+            <StackPanel x:Name="fromScratchArea" Visibility="Collapsed" Margin="0,24,0,0">
+                <Button x:Name="CreateFromScratchButton" Click="CreateFromScratchButton_Click" Content="Create" Background="{ThemeResource AccentFillColorDefaultBrush}" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"/>
+            </StackPanel>
 
-        <TextBlock Text="Recent documents" Margin="30" Style="{StaticResource SubtitleTextBlockStyle}"/>
-        <StackPanel>
-            <!--put recent docs list here -->
         </StackPanel>
         
-        
-    </StackPanel>
+    </Grid>
+    
+
 
 
 

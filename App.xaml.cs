@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
@@ -48,6 +49,8 @@ namespace WritingAssistant
             rootFrame.NavigationFailed += onNavigationFailed;
             m_window.Content = rootFrame;
 
+            checkDirectory();
+
             rootFrame.Navigate(typeof(EntryPage), args.Arguments);
             m_window.Activate();
         }
@@ -57,6 +60,30 @@ namespace WritingAssistant
             throw new Exception("Failed to load page " + e.SourcePageType.FullName);
         }
 
+        void checkDirectory()
+        {
+            appDataPath = @"c:\writing_assistant_files";
+            try
+            {
+                if (!Directory.Exists(appDataPath))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(appDataPath);
+                    Debug.WriteLine(di.ToString());
+
+                    FileStream recent = File.Create(appDataPath + @"\recent.json");
+                    FileStream profiles = File.Create(appDataPath + @"\profiles.json");
+                    FileStream comments = File.Create(appDataPath + @"\comments.json");
+
+                }
+            } catch (IOException e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+
+
+        }
+
         public static Window m_window;
+        public static string appDataPath;
     }
 }

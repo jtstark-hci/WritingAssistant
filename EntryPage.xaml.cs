@@ -16,6 +16,7 @@ using Windows.Foundation.Collections;
 using Newtonsoft.Json;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using System.Text;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,46 +31,85 @@ namespace WritingAssistant
         public EntryPage()
         {
             this.InitializeComponent();
-            //this.RequestedTheme = ElementTheme.Light;
+            //load recent projects here
         }
 
-        private void NewDoc_Click(object sender, RoutedEventArgs e)
+        private void NewProj_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(DocPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            //Frame.Navigate(typeof(DocPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            CreateProjectArea.Visibility = Visibility.Visible;
         }
 
-        private async void Open_Click(object sender, RoutedEventArgs e)
+        private void filesOrNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Open a text file.
-            FileOpenPicker opener = new FileOpenPicker();
+            switch (filesOrNo.SelectedIndex)
+            {
+                case 0:
+                    //browse for files to add
+                    browseArea.Visibility = Visibility.Visible;
+                    fromScratchArea.Visibility = Visibility.Collapsed;
+                    break;
 
+
+                case 1:
+                    //start a new project from scratch
+                    fromScratchArea.Visibility = Visibility.Visible;
+                    browseArea.Visibility = Visibility.Collapsed;
+                    break;
+
+
+                default:
+                    break;
+            }
+        }
+
+
+        private async void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Create a file picker
+            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            // See the sample code below for how to make the window accessible from the App class.
             var window = App.m_window;
 
             // Retrieve the window handle (HWND) of the current WinUI 3 window.
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
 
             // Initialize the file picker with the window handle (HWND).
-            WinRT.Interop.InitializeWithWindow.Initialize(opener, hWnd);
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
 
+            // Set options for your file picker
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".rtf");
 
-            opener.SuggestedStartLocation =
-                PickerLocationId.DocumentsLibrary;
-            opener.FileTypeFilter.Add(".rtf");
-
-            StorageFile file = await opener.PickSingleFileAsync();
-
-            if (file != null)
+            // Open the picker for the user to pick a file
+            IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
+            if (files.Count > 0)
             {
-                Frame.Navigate(typeof(DocPage), file, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-
-                //using (Windows.Storage.Streams.IRandomAccessStream randAccStream =
-                //    await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                //{
-                //    // Load the file into the Document property of the RichEditBox.
-                //    //editor.Document.LoadFromStream(Microsoft.UI.Text.TextSetOptions.FormatRtf, randAccStream);
-                //    Frame.Navigate(typeof(DocPage), randAccStream, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight }); 
-                //}
+                StringBuilder output = new StringBuilder("");
+                foreach (StorageFile file in files)
+                {
+                    output.Append(file.Name + "\n");
+                }
+                FileNames.Text = output.ToString();
+                CreateButton.Visibility = Visibility.Visible;
             }
+            else
+            {
+                //nothing
+            }
+
+        }
+
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CreateFromScratchButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

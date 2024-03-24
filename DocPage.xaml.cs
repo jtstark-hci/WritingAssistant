@@ -24,12 +24,16 @@ using Windows.Storage.Streams;
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace WritingAssistant
+    
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class DocPage : Page
     {
+
+        Comment comment = null;
+
         public DocPage()
         {
             this.InitializeComponent();
@@ -71,6 +75,7 @@ namespace WritingAssistant
             opener.SuggestedStartLocation =
                 PickerLocationId.DocumentsLibrary;
             opener.FileTypeFilter.Add(".rtf");
+            opener.FileTypeFilter.Add(".txt");
 
             StorageFile file = await opener.PickSingleFileAsync();
 
@@ -82,6 +87,8 @@ namespace WritingAssistant
                     // Load the file into the Document property of the RichEditBox.
                     docTitle.Text = file.DisplayName;
                     editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
+
+                    //add file to recents (if not already there)
                 }
             }
         }
@@ -128,6 +135,9 @@ namespace WritingAssistant
                     Windows.UI.Popups.MessageDialog errorBox =
                         new Windows.UI.Popups.MessageDialog("File " + file.Name + " couldn't be saved.");
                     await errorBox.ShowAsync();
+                } else
+                {
+                    //add file to recent list (if not already there)
                 }
             }
         }
@@ -171,6 +181,12 @@ namespace WritingAssistant
         private void charProfIcon_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = true;
+
+            //testing
+            ITextRange range = editor.Document.GetRange(5, 5);
+            range.CharacterFormat.Hidden = FormatEffect.On;
+            range.SetText(TextSetOptions.FormatRtf, "test insertion");
+            Console.WriteLine(range.StartPosition);
         }
 
         private void commentIcon_Click (object sender, RoutedEventArgs e)

@@ -217,7 +217,9 @@
                         </RichEditBox.Resources>
 
                     </RichEditBox>
-                    
+
+                    <StackPanel Grid.Column="2" x:Name="noteIcons"  />
+
                 </Grid>
 
 

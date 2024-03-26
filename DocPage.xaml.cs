@@ -52,15 +52,16 @@ namespace WritingAssistant
                 App.activeProject = project;
                 App.SaveNewProject(project);
 
-                foreach(StorageFile file in project.StoryFiles)
+                foreach(string file in project.StoryFiles)
                 {
                     Debug.WriteLine("found a file");
+                    StorageFile f = await StorageFile.GetFileFromPathAsync(file);
                     using (IRandomAccessStream randAccStream =
-                        await file.OpenAsync(FileAccessMode.Read))
+                        await f.OpenAsync(FileAccessMode.Read))
                     {
                         Debug.WriteLine("loading file");
                         editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
-                        docTitle.Text = file.DisplayName;
+                        docTitle.Text = f.DisplayName;
                     }
                 }
             }

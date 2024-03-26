@@ -29,7 +29,7 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class EntryPage : Page
     {
-        List<StorageFile> filesList = new List<StorageFile>();
+        List<string> filesList = new List<string>();
         UserProject project;
 
 
@@ -102,7 +102,7 @@ namespace WritingAssistant
                 foreach (StorageFile file in files)
                 {
                     output.Append(file.Name + "\n");
-                    filesList.Add(file);
+                    filesList.Add(file.Path);
                 }
                 FileNames.Text = output.ToString();
                 CreateButton.Visibility = Visibility.Visible;

@@ -17,6 +17,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -74,7 +76,7 @@ namespace WritingAssistant
                     List<(int,string)> projectIds = new List<(int,string)>();
                     File.WriteAllText(appDataPath + @"\projectIDs.json", JsonConvert.SerializeObject(projectIds));
 
-                    File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(new ProjectJson()));
+                    File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(new ProjectJsonFile()));
                     File.WriteAllText(appDataPath + @"\profiles.json", JsonConvert.SerializeObject(new ProfileJson()));
                     File.WriteAllText(appDataPath + @"\comments.json", JsonConvert.SerializeObject(new CommentJson()));
 
@@ -90,13 +92,31 @@ namespace WritingAssistant
 
         internal static void SaveNewProject(UserProject project)
         {
+            Debug.WriteLine("saving project");
             string fileContents = File.ReadAllText(appDataPath + @"\projects.json");
-            ProjectJson contentObject = JsonConvert.DeserializeObject<ProjectJson>(fileContents);
-            project.Id = contentObject.next_id;
-            contentObject.projects.Add(project);
-            contentObject.next_id++;
+            ProjectJsonFile fileJson = JsonConvert.DeserializeObject<ProjectJsonFile>(fileContents);
 
-            File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(contentObject));
+            project.Id = fileJson.next_id;
+
+            //Deserialize all projects
+            List<UserProject> projectsList = new List<UserProject>();
+            foreach(string proj in fileJson.projects)
+            {
+                projectsList.Add(ProjectJsonReader.DeserializeProject(proj));
+            }
+            projectsList.Add(project);
+
+
+            //Re-serialzie all projects, including the new one
+            fileJson.projects = new List<string>();
+            foreach(UserProject p in projectsList)
+            {
+                fileJson.projects.Add(ProjectJsonReader.SerializeProject(p));
+            }
+
+            fileJson.next_id++;
+
+            File.WriteAllText(appDataPath + @"\projects.json", JsonConvert.SerializeObject(fileJson));
 
             fileContents = File.ReadAllText(appDataPath + @"\projectIDs.json");
             List<(int,string)> contentList = JsonConvert.DeserializeObject<List<(int,string)>>(fileContents);
@@ -122,12 +142,12 @@ namespace WritingAssistant
         static string appDataPath;
         internal static UserProject activeProject;
 
-        struct ProjectJson {
-
-            public ProjectJson() { }
+        struct ProjectJsonFile {
+            public ProjectJsonFile() { }
 
             public int next_id = 0;
-            public List<UserProject> projects = new List<UserProject>();
+            public List<string> projects = new List<string>();
+
         }
 
         struct ProfileJson

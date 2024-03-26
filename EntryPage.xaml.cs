@@ -40,8 +40,9 @@ namespace WritingAssistant
             List<(int, string)> projects = App.GetProjectNames();
             foreach ((int,string) project in projects)
             {
-                ProjectLoadCard projCard = new ProjectLoadCard(project.Item2, project.Item1);
+                ProjectLoadCard projCard = new ProjectLoadCard(project.Item2, project.Item1, this);
                 ProjectList.Children.Add(projCard);
+                Debug.WriteLine("adding project card");
             }
         }
 
@@ -115,12 +116,15 @@ namespace WritingAssistant
         {
             project = new UserProject(projNameEntry.Text, filesList);
             Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            Debug.WriteLine("opening project (with file)");
         }
 
         private void CreateFromScratchButton_Click(object sender, RoutedEventArgs e)
         {
             project = new UserProject(projNameEntry.Text);
             Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            Debug.WriteLine("opening project");
         }
+
     }
 }

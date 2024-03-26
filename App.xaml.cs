@@ -19,6 +19,7 @@ using Windows.Foundation.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Windows.Storage;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -135,6 +136,38 @@ namespace WritingAssistant
             string fileContents = File.ReadAllText(appDataPath + @"\projectIDs.json");
             List<(int, string)> contentList = JsonConvert.DeserializeObject<List<(int, string)>>(fileContents);
             return contentList;
+        }
+
+        internal static UserProject OpenProject(int id)
+        {
+            string fileContents = File.ReadAllText(appDataPath + @"\projects.json");
+            ProjectJsonFile fileJson = JsonConvert.DeserializeObject<ProjectJsonFile>(fileContents);
+            UserProject project = null;
+
+            if (fileJson.projects.Count > 0)
+            {
+                //Deserialize all projects until we find the right one
+                int index = 0;
+                bool found = false;
+                while (index < fileJson.projects.Count && !found)
+                {
+                    string proj = fileJson.projects[index];
+                    project = ProjectJsonReader.DeserializeProject(proj);
+                    if (project.Id == id)
+                    {
+                        found = true;
+                    } else
+                    {
+                        index++;
+                    }
+                }
+            }
+            return project;
+        }
+
+        internal static void UserControlNavigationHelper()
+        {
+            (m_window.Content as Frame).Navigate(typeof(DocPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
 

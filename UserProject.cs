@@ -6,7 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Diagnostics;
 using Windows.Storage;
+using Windows.Media.AppRecording;
+using Microsoft.UI.Composition;
 
 namespace WritingAssistant
 {
@@ -19,6 +22,8 @@ namespace WritingAssistant
         public List<string> StoryFiles { get; set; } = new List<string>();
         public List<Profile> Profiles { get; } = null;
 
+        public bool isNew { get; set; } = true;
+
         //TO ADD:
         //notifications list
         //Robo work log
@@ -28,12 +33,14 @@ namespace WritingAssistant
         public UserProject(string name)
         {
             Name = name;
+            Debug.WriteLine("creating project");
         }
 
         public UserProject(string name, List<string> files)
         {
             Name = name;
             StoryFiles = files;
+            Debug.WriteLine("creating project");
         }
 
         internal UserProject(int id, string name, List<string> files)
@@ -71,12 +78,15 @@ namespace WritingAssistant
             public int id;
             public string name;
             public string files;
+            public bool isSaved;
 
-            public TempJson(int i, string n, string f)
+            public TempJson(int i, string n, string f, bool b)
             {
                 id = i;
                 files = f;
                 name = n;
+                isSaved = b;
+                
             }
         }
 
@@ -84,7 +94,7 @@ namespace WritingAssistant
         { 
             string filesJson = JsonConvert.SerializeObject(proj.StoryFiles.ToArray());
 
-            TempJson temp = new TempJson(proj.Id, proj.Name, filesJson);
+            TempJson temp = new TempJson(proj.Id, proj.Name, filesJson, proj.isNew);
 
             return JsonConvert.SerializeObject(temp);
         }
@@ -93,8 +103,10 @@ namespace WritingAssistant
         {
             TempJson temp = JsonConvert.DeserializeObject<TempJson>(json);
             string[] files = JsonConvert.DeserializeObject<string[]>(temp.files);
+            UserProject proj = new UserProject(temp.id, temp.name, files.ToList());
+            proj.isNew = false;
 
-            return new UserProject(temp.id, temp.name, files.ToList());
+            return proj;
         }
 
 

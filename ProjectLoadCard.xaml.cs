@@ -12,34 +12,41 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace WritingAssistant
 {
-    public sealed partial class ProjectLoadCard : UserControl
+    public partial class ProjectLoadCard : UserControl
     {
         public string project = "";
         public int projectId = -1;
+        EntryPage page;
+
 
         public ProjectLoadCard()
         {
             this.InitializeComponent();
         }
 
-        public ProjectLoadCard(string projectName, int projId)
+        public ProjectLoadCard(string projectName, int projId, EntryPage p)
         {
             this.InitializeComponent();
             this.project = projectName;
             this.projectId = projId;
 
             projName.Text = project;
+            page = p;
         }
 
         private void projButton_Click(object sender, RoutedEventArgs e)
         {
             //open selected project
+            UserProject selected = App.OpenProject(projectId);
+            page.Frame.Navigate(typeof(DocPage), selected, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
+
     }
 }

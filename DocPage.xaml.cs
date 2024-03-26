@@ -50,7 +50,13 @@ namespace WritingAssistant
                 Debug.WriteLine("parameter was a project");
                 UserProject project = (UserProject)e.Parameter;
                 App.activeProject = project;
-                App.SaveNewProject(project);
+
+                if (project.isNew)
+                {
+                    App.SaveNewProject(project);
+                    project.isNew = false;
+                }
+                
 
                 foreach(string file in project.StoryFiles)
                 {

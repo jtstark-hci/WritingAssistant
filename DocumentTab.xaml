@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WritingAssistant.DocumentTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WritingAssistant"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}">
+
+    <Grid VerticalAlignment="Stretch">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="44"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <RelativePanel Grid.Row="0" Margin="0,12,0,12">
+            <RelativePanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                </Style>
+            </RelativePanel.Resources>
+
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" Text="Untitled"  x:Name="docTitle" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <Button RelativePanel.RightOf="docTitle" AutomationProperties.Name="Edit title" ToolTipService.ToolTip="Edit title" Margin="0,4,0,0">
+                <FontIcon Glyph="&#xE70F;" FontSize="18"/>
+                <Button.Flyout>
+                    <Flyout x:Name="editTitleFlyout">
+                        <StackPanel>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Edit document title" Margin="0,0,0,12"/>
+                            <TextBox x:Name="titleEditBox" Width="256"></TextBox>
+                            <RelativePanel HorizontalAlignment="Stretch">
+                                <Button AutomationProperties.Name="Cancel" ToolTipService.ToolTip="Cancel" Click="TitleCancelButton_Click" RelativePanel.AlignLeftWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE711;"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button AutomationProperties.Name="Confirm" ToolTipService.ToolTip="Confirm" Click="TitleConfirmButton_Click" RelativePanel.AlignRightWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE73E;"/>
+                                    </Button.Content>
+                                </Button>
+                            </RelativePanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </RelativePanel>
+
+        <RelativePanel Grid.Row="1" Margin="0,0,0,4">
+            <RelativePanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                </Style>
+            </RelativePanel.Resources>
+            
+            <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click" RelativePanel.LeftOf="italicButton" >
+
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8DD;" FontSize="18"/>
+                </Button.Content>
+            </Button>
+            <Button  x:Name="italicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic" RelativePanel.AlignHorizontalCenterWithPanel="True">
+
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8DB;" FontSize="18"/>
+                </Button.Content>
+            </Button>
+
+            <DropDownButton x:Name="fontColorButton" AutomationProperties.Name="Font color"
+            BorderThickness="0" ToolTipService.ToolTip="Font color"
+            Background="Transparent"
+            RelativePanel.RightOf="italicButton">
+                <SymbolIcon Symbol="FontColor" Height="18" Width="18"/>
+                <DropDownButton.Flyout>
+                    <Flyout Placement="Bottom">
+                        <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
+                            <VariableSizedWrapGrid.Resources>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Width" Value="16"/>
+                                    <Setter Property="Height" Value="16"/>
+                                </Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="MinWidth" Value="0"/>
+                                    <Setter Property="MinHeight" Value="0"/>
+                                    <Setter Property="Margin" Value="6"/>
+                                </Style>
+                            </VariableSizedWrapGrid.Resources>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Red">
+                                <Button.Content>
+                                    <Rectangle Fill="Red"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Orange">
+                                <Button.Content>
+                                    <Rectangle Fill="Orange"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Yellow">
+                                <Button.Content>
+                                    <Rectangle Fill="Yellow"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Green">
+                                <Button.Content>
+                                    <Rectangle Fill="Green"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Blue">
+                                <Button.Content>
+                                    <Rectangle Fill="Blue"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Indigo">
+                                <Button.Content>
+                                    <Rectangle Fill="Indigo"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Violet">
+                                <Button.Content>
+                                    <Rectangle Fill="Violet"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Click="ColorButton_Click" AutomationProperties.Name="Gray">
+                                <Button.Content>
+                                    <Rectangle Fill="Gray"/>
+                                </Button.Content>
+                            </Button>
+                        </VariableSizedWrapGrid>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </RelativePanel>
+        
+
+
+        <ScrollView Grid.Row="2" VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+
+            <RichEditBox x:Name="editor" VerticalAlignment="Stretch" AutomationProperties.Name="Custom editor"
+                    Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+                    TextChanged="Editor_TextChanged"
+                    GotFocus="Editor_GotFocus"
+                    PlaceholderText="Once upon a time...">
+
+                <RichEditBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"/>
+                </RichEditBox.Resources>
+
+            </RichEditBox>
+
+        </ScrollView>
+
+    </Grid>
+</Page>

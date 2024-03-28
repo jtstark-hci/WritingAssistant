@@ -20,6 +20,11 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="256"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
+            </Style>
+        </Grid.Resources>
 
 
         <RelativePanel Grid.Row="0" Grid.ColumnSpan="3" Margin="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -31,17 +36,19 @@
                 </Style>
             </RelativePanel.Resources>
 
+            <TextBlock x:Name="ProjectTitle" Style="{ThemeResource SubtitleTextBlockStyle}" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
+
             <Button Click="SaveButton_Click" AutomationProperties.Name="Save file" ToolTipService.ToolTip="Save file"
-            RelativePanel.AlignLeftWithPanel="True">
+            RelativePanel.RightOf="ProjectTitle">
                 <Button.Content>
-                    <FontIcon Glyph="&#xE74E;"/>
+                    <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xE74E;"/>
                 </Button.Content>
             </Button>
 
             <Button Click="RoboButton_Click" AutomationProperties.Name="Open Robo panel" ToolTipService.ToolTip="Open Robo panel"
             RelativePanel.AlignRightWithPanel="True">
                 <Button.Content>
-                    <FontIcon Glyph="&#xE99A;"/>
+                    <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xE99A;"/>
                 </Button.Content>
             </Button>
            
@@ -59,11 +66,11 @@
                     <RowDefinition/>  <!-- Note files-->
                 </Grid.RowDefinitions>
                 
-                <TextBlock Grid.Row="0" Margin="5" Style="{ThemeResource BodyTextBlockStyle}">Project files</TextBlock>
+                <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Style="{ThemeResource BodyTextBlockStyle}">Project files</TextBlock>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1">
-                    <FontIcon Glyph="&#xE8A5;" FontSize="16"/>
-                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Margin="5" FontWeight="Bold" Text="Story files"/>
+                    <FontIcon Glyph="&#xE8A5;" Foreground="{ThemeResource AccentFillColorDefaultBrush}" FontSize="16"/>
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Margin="5" FontWeight="SemiBold" Text="Story files"/>
                 </StackPanel>
                 
                 <StackPanel x:Name="StoryFilesList" Grid.Row="2">
@@ -77,7 +84,17 @@
                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Margin="5" Text="Add file"/>
                     </StackPanel>
                 </Button>
-                
+
+                <StackPanel Orientation="Horizontal" Grid.Row="4">
+                    <FontIcon Glyph="&#xE8FD;" Foreground="{ThemeResource AccentFillColorDefaultBrush}" FontSize="16"/>
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Margin="5" FontWeight="SemiBold" Text="Outline files"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="5">
+                    <FontIcon Glyph="&#xE70B;" Foreground="{ThemeResource AccentFillColorDefaultBrush}" FontSize="16"/>
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Margin="5" FontWeight="SemiBold" Text="Note files"/>
+                </StackPanel>
+
             </Grid>
             
             <!-- Characters list -->
@@ -87,7 +104,7 @@
                     <RowDefinition/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Margin="5" Style="{ThemeResource BodyTextBlockStyle}">Character profiles</TextBlock>
+                <TextBlock Grid.Row="0" FontWeight="Bold" Margin="5" Style="{ThemeResource BodyTextBlockStyle}">Character profiles</TextBlock>
 
                 <StackPanel x:Name="CharactersList" Grid.Row="1">
 
@@ -104,14 +121,6 @@
         </StackPanel>
 
         <TabView x:Name="tabsView" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" IsAddTabButtonVisible="False" TabCloseRequested="tabsView_TabCloseRequested">
-            <TabView.TabItems>
-                <TabViewItem Header="Test tab doc">
-                    <TabViewItem.IconSource>
-                        <SymbolIconSource Symbol="Document"/>
-                    </TabViewItem.IconSource>
-                    <local:DocumentTab/>
-                </TabViewItem>
-            </TabView.TabItems>
 
 
         </TabView>

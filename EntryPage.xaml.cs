@@ -105,7 +105,7 @@ namespace WritingAssistant
                     output.Append(file.Name + "\n");
                     filesList.Add(file.Path);
                 }
-                FileNames.Text = output.ToString();
+                FileNames.Text += output.ToString();
                 CreateButton.Visibility = Visibility.Visible;
                 Debug.WriteLine("filesList length: " + filesList.Count);
             }

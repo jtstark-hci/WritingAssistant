@@ -27,9 +27,39 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class DocumentTab : Page
     {
+        FileListItem listItem;
+
         public DocumentTab()
         {
             this.InitializeComponent();
+            docTitle.Text = "Untitled";
+            listItem = new FileListItem();
+            listItem.tab = this;
+            listItem.ChangeFileName(docTitle.Text);
+        }
+
+        public DocumentTab(FileListItem li)
+        {
+            this.InitializeComponent();
+            docTitle.Text = li.file.DisplayName;
+            listItem = li;
+            OpenFile(li.file);
+
+        }
+
+        public async void OpenFile(StorageFile file)
+        {
+            using (IRandomAccessStream randAccStream =
+            await file.OpenAsync(FileAccessMode.Read))
+            {
+                editor.Document.LoadFromStream(TextSetOptions.FormatRtf, randAccStream);
+            }
+        }
+
+        public void Close()
+        {
+            listItem.alreadyOpen = false;
+            listItem.tab = null;
         }
 
         
@@ -53,6 +83,7 @@ namespace WritingAssistant
         private void TitleConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             docTitle.Text = titleEditBox.Text;
+            listItem.ChangeFileName(titleEditBox.Text);
             titleEditBox.Text = "";
             editTitleFlyout.Hide();
         }

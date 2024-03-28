@@ -26,7 +26,7 @@
                 </Style>
             </RelativePanel.Resources>
 
-            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" Text="Untitled"  x:Name="docTitle" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" x:Name="docTitle" Style="{ThemeResource TitleTextBlockStyle}"/>
             <Button RelativePanel.RightOf="docTitle" AutomationProperties.Name="Edit title" ToolTipService.ToolTip="Edit title" Margin="0,4,0,0">
                 <FontIcon Glyph="&#xE70F;" FontSize="18"/>
                 <Button.Flyout>

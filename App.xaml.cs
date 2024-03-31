@@ -20,6 +20,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Media.Animation;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -64,7 +68,7 @@ namespace WritingAssistant
             throw new Exception("Failed to load page " + e.SourcePageType.FullName);
         }
 
-        void checkFillDirectory()
+        static void checkFillDirectory()
         {
             appDataPath = @"c:\writing_assistant_files";
             try
@@ -81,6 +85,10 @@ namespace WritingAssistant
                     File.WriteAllText(appDataPath + @"\profiles.json", JsonConvert.SerializeObject(new ProfileJson()));
                     File.WriteAllText(appDataPath + @"\comments.json", JsonConvert.SerializeObject(new CommentJson()));
 
+                    string miscPath = App.appDataPath + @"\misc";
+                    DirectoryInfo subDir = Directory.CreateDirectory(miscPath);
+                    FileStream fs = File.Create(miscPath + @"\Untitled.rtf");
+                    fs.Close();
 
                 }
             } catch (IOException e)
@@ -91,19 +99,63 @@ namespace WritingAssistant
 
         }
 
-        internal static void SaveNewProject(UserProject project)
+        internal static void CreateProjectDirectory(UserProject project)
+        {
+            string projectPath = App.appDataPath + @"\project" + project.Id + @"\story_files";
+            DirectoryInfo di = Directory.CreateDirectory(projectPath);
+        }
+
+        internal static Task<UserProject> CopyProjectFilesAsync(UserProject project)
+        {
+            return Task.Run(() => CopyProjectFiles(project));
+        }
+
+
+        internal static async Task<UserProject> CopyProjectFiles(UserProject project)
+        {
+            try
+            {
+                string projectPath = App.appDataPath + @"\project" + project.Id + @"\story_files";
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(projectPath);
+
+                List<StorageFile> files = new List<StorageFile>();
+                foreach (StorageFile file in project.StoryFiles)
+                {
+                    StorageFile copy = await file.CopyAsync(folder, file.Name, NameCollisionOption.ReplaceExisting);
+
+                    files.Add(copy);
+
+
+                }
+
+                project.StoryFiles = files.ToList();
+
+            } catch(COMException e)
+            {
+                Debug.WriteLine("exception");
+            }
+
+            return project;
+
+        }
+
+
+        internal static async void SaveNewProject(UserProject project)
         {
             Debug.WriteLine("saving project");
             string fileContents = File.ReadAllText(appDataPath + @"\projects.json");
             ProjectJsonFile fileJson = JsonConvert.DeserializeObject<ProjectJsonFile>(fileContents);
 
             project.Id = fileJson.next_id;
+            CreateProjectDirectory(project);
+            UserProject projAgain = await CopyProjectFiles(project);
+
 
             //Deserialize all projects
             List<UserProject> projectsList = new List<UserProject>();
             foreach(string proj in fileJson.projects)
             {
-                projectsList.Add(ProjectJsonReader.DeserializeProject(proj));
+                projectsList.Add(await ProjectJsonReader.DeserializeProjectAsync(proj));
             }
             projectsList.Add(project);
 
@@ -124,11 +176,13 @@ namespace WritingAssistant
             contentList.Add((project.Id, project.Name));
             File.WriteAllText(appDataPath + @"\projectIDs.json", JsonConvert.SerializeObject(contentList));
 
+
         }
 
         internal static void SaveProject(UserProject project)
         {
             //TO DO: overwrite project in projects.json
+            //TO DO: save file contents
         }
 
         internal static List<(int,string)> GetProjectNames()
@@ -138,21 +192,29 @@ namespace WritingAssistant
             return contentList;
         }
 
-        internal static UserProject OpenProject(int id)
+
+        internal static Task<UserProject> OpenProjectAsync(int id)
+        {
+            return Task.Run(() => OpenProject(id));
+        }
+
+        internal static async Task<UserProject> OpenProject(int id)
         {
             string fileContents = File.ReadAllText(appDataPath + @"\projects.json");
             ProjectJsonFile fileJson = JsonConvert.DeserializeObject<ProjectJsonFile>(fileContents);
-            UserProject project = null;
+            
 
             if (fileJson.projects.Count > 0)
             {
                 //Deserialize all projects until we find the right one
                 int index = 0;
                 bool found = false;
+                UserProject project = null;
+
                 while (index < fileJson.projects.Count && !found)
                 {
                     string proj = fileJson.projects[index];
-                    project = ProjectJsonReader.DeserializeProject(proj);
+                    project = await ProjectJsonReader.DeserializeProjectAsync(proj);
                     if (project.Id == id)
                     {
                         found = true;
@@ -161,8 +223,11 @@ namespace WritingAssistant
                         index++;
                     }
                 }
+                activeProject = project;
+                return project;
             }
-            return project;
+            return null;
+
         }
 
         internal static void UserControlNavigationHelper()
@@ -172,7 +237,7 @@ namespace WritingAssistant
 
 
         public static Window m_window;
-        static string appDataPath;
+        public static string appDataPath;
         internal static UserProject activeProject;
 
         struct ProjectJsonFile {

@@ -18,6 +18,8 @@ using Newtonsoft.Json;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using System.Text;
+using WinRT;
+using Microsoft.UI.Xaml.Shapes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,7 +31,7 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class EntryPage : Page
     {
-        List<string> filesList = new List<string>();
+        List<StorageFile> filesList = new List<StorageFile>();
         UserProject project;
 
 
@@ -103,7 +105,7 @@ namespace WritingAssistant
                 foreach (StorageFile file in files)
                 {
                     output.Append(file.Name + "\n");
-                    filesList.Add(file.Path);
+                    filesList.Add(file);
                 }
                 FileNames.Text += output.ToString();
                 CreateButton.Visibility = Visibility.Visible;
@@ -119,9 +121,25 @@ namespace WritingAssistant
             Debug.WriteLine("opening project (with file)");
         }
 
+
+
         private void CreateFromScratchButton_Click(object sender, RoutedEventArgs e)
         {
-            project = new UserProject(projNameEntry.Text);
+
+            CreateFromScratchHelper();
+
+        }
+
+        private async void CreateFromScratchHelper()
+        {
+            List<StorageFile> tempFilesList = new List<StorageFile>();
+            string path = App.appDataPath + @"\misc\Untitled.rtf";
+
+            StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+            tempFilesList.Add(file);
+
+            project = new UserProject(projNameEntry.Text, tempFilesList);
+
             Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             Debug.WriteLine("opening project");
         }

@@ -9,7 +9,11 @@ using System.Transactions;
 using System.Diagnostics;
 using Windows.Storage;
 using Windows.Media.AppRecording;
+using Windows.Foundation.Metadata;
 using Microsoft.UI.Composition;
+using System.IO;
+using Windows.Foundation;
+using System.ComponentModel;
 
 namespace WritingAssistant
 {
@@ -19,10 +23,8 @@ namespace WritingAssistant
         public int Id { get; set; } = -1;
         public string Name { get; set; } = "";
         public List<Comment> Comments { get; } = null;
-        public List<string> StoryFiles { get; set; } = new List<string>();
+        public List<StorageFile> StoryFiles { get; set; } = new List<StorageFile>();
         public List<Profile> Profiles { get; } = null;
-
-        public bool isNew { get; set; } = true;
 
         //TO ADD:
         //notifications list
@@ -34,21 +36,25 @@ namespace WritingAssistant
         {
             Name = name;
             Debug.WriteLine("creating project");
+            App.SaveNewProject(this);
+
         }
 
-        public UserProject(string name, List<string> files)
+        public UserProject(string name, List<StorageFile> files)
         {
             Name = name;
             StoryFiles = files;
-            Debug.WriteLine("creating project");
+            App.SaveNewProject(this);
+
         }
 
-        internal UserProject(int id, string name, List<string> files)
+        internal UserProject(int id, string name, List<StorageFile> files)
         {
             Id = id;
             Name = name;
             StoryFiles = files;
         }
+
 
         public void AddCharacterToProject(Profile profile)
         {
@@ -78,35 +84,57 @@ namespace WritingAssistant
             public int id;
             public string name;
             public string files;
-            public bool isSaved;
 
-            public TempJson(int i, string n, string f, bool b)
+            public TempJson(int i, string n, string f)
             {
                 id = i;
                 files = f;
-                name = n;
-                isSaved = b;
-                
+                name = n;                
             }
         }
 
         internal static string SerializeProject(UserProject proj)
-        { 
-            string filesJson = JsonConvert.SerializeObject(proj.StoryFiles.ToArray());
+        {
+            List<string> filePaths = new List<string>();
+            foreach(StorageFile file in proj.StoryFiles)
+            {
+                filePaths.Add(file.Path);
+            }
+            string filesJson = JsonConvert.SerializeObject(filePaths.ToArray());
 
-            TempJson temp = new TempJson(proj.Id, proj.Name, filesJson, proj.isNew);
+            TempJson temp = new TempJson(proj.Id, proj.Name, filesJson);
 
             return JsonConvert.SerializeObject(temp);
         }
 
-        internal static UserProject DeserializeProject(string json)
+        internal static Task<UserProject> DeserializeProjectAsync(string json)
+        {
+            return Task.Run(() => DeserializeProject(json));
+        }
+
+        internal static async Task<UserProject> DeserializeProject(string json)
         {
             TempJson temp = JsonConvert.DeserializeObject<TempJson>(json);
-            string[] files = JsonConvert.DeserializeObject<string[]>(temp.files);
-            UserProject proj = new UserProject(temp.id, temp.name, files.ToList());
-            proj.isNew = false;
+            string[] filePaths = JsonConvert.DeserializeObject<string[]>(temp.files);
 
+            UserProject project = await RebuildProject(temp, filePaths);
+            return project;
+
+
+        }
+
+        private static async Task<UserProject> RebuildProject(TempJson temp, string[] filePaths)
+        {
+            List<StorageFile> files = new List<StorageFile>();
+            foreach (string path in filePaths)
+            {
+                StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+                files.Add(file);
+            }
+
+            UserProject proj = new UserProject(temp.id, temp.name, files);
             return proj;
+
         }
 
 

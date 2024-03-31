@@ -42,15 +42,7 @@ namespace WritingAssistant
             this.InitializeComponent();
         }
 
-        private void CreateEmptyStoryTab()
-        {
-            //DocumentTab tab = new DocumentTab();
-            //tabsView.TabItems.Add(tab);
-            //tabsView.SelectedItem = tab;
-            //weird formatting going on here, must fix
-        }
-
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //update this so it puts all files into the list instead of opening all
             if (e.Parameter is UserProject)
@@ -60,24 +52,18 @@ namespace WritingAssistant
                 UserProject project = (UserProject)e.Parameter;
                 App.activeProject = project;
                 ProjectTitle.Text = project.Name;
+                LoadFiles();
+            }
+        }
 
-                if (project.isNew)
-                {
-                    App.SaveNewProject(project);
-                    if (!(project.StoryFiles.Count >= 1))
-                    {
-                        //open blank file
-                        CreateEmptyStoryTab();
-                    }
-                    project.isNew = false;
-                }
-
-
-                foreach (string file in project.StoryFiles)
+        public void LoadFiles()
+        {
+            if (App.activeProject != null)
+            {
+                foreach (StorageFile file in App.activeProject.StoryFiles)
                 {
                     Debug.WriteLine("found a file");
-                    StorageFile f = await StorageFile.GetFileFromPathAsync(file);
-                    FileListItem listItem = new FileListItem(f, this);
+                    FileListItem listItem = new FileListItem(file, this);
 
                     StoryFilesList.Children.Add(listItem);
 
@@ -86,6 +72,12 @@ namespace WritingAssistant
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Number of files: " + App.activeProject.StoryFiles.Count);
+        }
+
+
+        private void RenameProject_Click(object sender, RoutedEventArgs e)
         {
 
         }

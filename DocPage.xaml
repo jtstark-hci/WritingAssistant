@@ -38,8 +38,14 @@
 
             <TextBlock x:Name="ProjectTitle" Style="{ThemeResource SubtitleTextBlockStyle}" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
 
-            <Button Click="SaveButton_Click" AutomationProperties.Name="Save file" ToolTipService.ToolTip="Save file"
-            RelativePanel.RightOf="ProjectTitle">
+            <Button Click="RenameProject_Click" x:Name="RenameProject" AutomationProperties.Name="Rename project" ToolTipService.ToolTip="Rename project" RelativePanel.RightOf="ProjectTitle">
+                <Button.Content>
+                    <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xE70F;"/>
+                </Button.Content>
+            </Button>
+
+            <Button Click="SaveButton_Click" AutomationProperties.Name="Save project" ToolTipService.ToolTip="Save project"
+            RelativePanel.RightOf="RenameProject">
                 <Button.Content>
                     <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xE74E;"/>
                 </Button.Content>

@@ -43,9 +43,19 @@ namespace WritingAssistant
 
         private void projButton_Click(object sender, RoutedEventArgs e)
         {
-            //open selected project
-            UserProject selected = App.OpenProject(projectId);
-            page.Frame.Navigate(typeof(DocPage), selected, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            OpenProjectHelper();
+            
+        }
+
+        private async void OpenProjectHelper()
+        {
+            UserProject project = await App.OpenProjectAsync(projectId);
+
+            if (project != null)
+            {
+                page.Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            
         }
 
     }

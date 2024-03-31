@@ -36,7 +36,7 @@
             <TextBox Header="Project name" x:Name="projNameEntry" Width="512" Margin="0,36,0,0" HorizontalAlignment="Left"/>
 
             <RadioButtons x:Name="filesOrNo" SelectionChanged="filesOrNo_SelectionChanged">
-                <RadioButton Content="Add story files" />
+                <RadioButton Content="Import files" />
                 <RadioButton Content="Create from scratch" />
             </RadioButtons>
 

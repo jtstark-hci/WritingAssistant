@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}">
 
-    <Grid VerticalAlignment="Stretch">
+    <Grid x:Name="TabGrid" VerticalAlignment="Stretch">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -142,7 +142,7 @@
         
 
 
-        <ScrollView Grid.Row="2" VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+        <ScrollView x:Name="Scroller" Grid.Row="2" VerticalAlignment="Stretch" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
 
             <RichEditBox x:Name="editor" VerticalAlignment="Stretch" AutomationProperties.Name="Custom editor"
                     Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"

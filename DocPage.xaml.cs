@@ -22,6 +22,8 @@ using Windows.Storage.Provider;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using System.Runtime.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -73,7 +75,33 @@ namespace WritingAssistant
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Number of files: " + App.activeProject.StoryFiles.Count);
+            SaveHelper();
+        }
+
+        private async void SaveHelper()
+        {
+            //Debug.WriteLine("Number of files: " + App.activeProject.StoryFiles.Count);
+            //loop through all project files, save
+            UserProject project = App.activeProject;
+            if (project != null)
+            {
+                foreach(TabViewItem tab in tabsView.TabItems)
+                {
+                    DocumentTab dt = (DocumentTab)tab.Content;
+                    StorageFile file = dt.GetFileListItem().file;
+
+                    using (IRandomAccessStream randAccStream =
+                    await file.OpenAsync(FileAccessMode.ReadWrite))
+                    {
+                        dt.GetEditor().Document.SaveToStream(TextGetOptions.FormatRtf, randAccStream);
+                    }
+                }
+            }
+
+            //Later: loop through all character profiles, save
+            //Later: save comments
+
+            //Project and filenames saved immediately when changed
         }
 
 

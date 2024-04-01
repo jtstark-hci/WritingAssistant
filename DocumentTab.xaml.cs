@@ -27,7 +27,8 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class DocumentTab : Page
     {
-        FileListItem listItem;
+        public FileListItem listItem;
+        internal bool unSavedChanges = false;
 
         public DocumentTab()
         {
@@ -47,6 +48,11 @@ namespace WritingAssistant
 
         }
 
+        public FileListItem GetFileListItem()
+        {
+            return listItem;
+        }
+
         public async void OpenFile(StorageFile file)
         {
             using (IRandomAccessStream randAccStream =
@@ -60,6 +66,11 @@ namespace WritingAssistant
         {
             listItem.alreadyOpen = false;
             listItem.tab = null;
+        }
+
+        internal RichEditBox GetEditor()
+        {
+            return editor;
         }
 
         

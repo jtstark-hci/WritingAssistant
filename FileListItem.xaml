@@ -8,9 +8,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Button Grid.Row="3" HorizontalAlignment="Stretch" Height="28" Margin="24,0,0,0" Padding="0" HorizontalContentAlignment="Left" BorderThickness="0" Click="FileListItem_Click">
-        <StackPanel>
-            <TextBlock x:Name="fileName" Style="{ThemeResource CaptionTextBlockStyle}" Margin="5"></TextBlock>
-        </StackPanel>
+    <Button Grid.Row="3" HorizontalAlignment="Stretch" Height="28" Margin="24,0,0,0" Padding="0" HorizontalContentAlignment="Stretch" BorderThickness="0" Click="FileListItem_Click">
+        <RelativePanel HorizontalAlignment="Stretch">
+            <TextBlock x:Name="fileName" Style="{ThemeResource CaptionTextBlockStyle}" RelativePanel.AlignLeftWithPanel="True" Margin="5"></TextBlock>
+            <Button x:Name="ListItemFlyout" Height="28" Width="Auto" BorderThickness="0" Background="Transparent" Click="ListItemFlyout_Click" RelativePanel.AlignRightWithPanel="True">
+                <Button.Content>
+                    <FontIcon FontSize="16" Glyph="&#xE712;" />
+                </Button.Content>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Copy" Icon="Copy" Click="FlyoutCopy_Click"/>
+                        <MenuFlyoutItem Text="Delete" Icon="Delete" Click="FlyoutDelete_Click"/>
+                        <MenuFlyoutItem Text="Rename" Icon="Edit" Click="FlyoutRename_Click"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+
+            </Button>
+        </RelativePanel>
     </Button>
 </UserControl>

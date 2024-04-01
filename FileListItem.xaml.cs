@@ -49,5 +49,25 @@ namespace WritingAssistant
         {
             fileName.Text = name;
         }
+
+        private void ListItemFlyout_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void FlyoutCopy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FlyoutDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FlyoutRename_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

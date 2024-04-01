@@ -27,19 +27,19 @@ namespace WritingAssistant
     /// </summary>
     public sealed partial class DocumentTab : Page
     {
-        public FileListItem listItem;
+        public StoryFileListItem listItem;
         internal bool unSavedChanges = false;
 
         public DocumentTab()
         {
             this.InitializeComponent();
             docTitle.Text = "Untitled";
-            listItem = new FileListItem();
-            listItem.tab = this;
+            listItem = new StoryFileListItem();
+            listItem.tabPage = this;
             listItem.ChangeFileName(docTitle.Text);
         }
 
-        public DocumentTab(FileListItem li)
+        public DocumentTab(StoryFileListItem li)
         {
             this.InitializeComponent();
             docTitle.Text = li.file.DisplayName;
@@ -48,7 +48,7 @@ namespace WritingAssistant
 
         }
 
-        public FileListItem GetFileListItem()
+        public StoryFileListItem GetFileListItem()
         {
             return listItem;
         }
@@ -65,7 +65,7 @@ namespace WritingAssistant
         public void Close()
         {
             listItem.alreadyOpen = false;
-            listItem.tab = null;
+            listItem.tabPage = null;
         }
 
         internal RichEditBox GetEditor()

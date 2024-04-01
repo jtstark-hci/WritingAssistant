@@ -65,7 +65,7 @@ namespace WritingAssistant
                 foreach (StorageFile file in App.activeProject.StoryFiles)
                 {
                     Debug.WriteLine("found a file");
-                    FileListItem listItem = new FileListItem(file, this);
+                    StoryFileListItem listItem = new StoryFileListItem(file, this);
 
                     StoryFilesList.Children.Add(listItem);
 
@@ -153,41 +153,60 @@ namespace WritingAssistant
             sender.TabItems.Remove(args.Tab);
         }
 
-        internal DocumentTab OpenTab(FileListItem item)
+        internal Page OpenTab(UserControl item)
         {
-            DocumentTab dt = null;
+            Page tab = null;
+            if (item is StoryFileListItem)
+            {
+                tab = (DocumentTab)item;
+                OpenStoryDocTab((StoryFileListItem)item, (DocumentTab)tab);
+            }
+
+
+
+
+            return tab;
+        }
+
+
+        internal void OpenStoryDocTab(StoryFileListItem item, DocumentTab tab)
+        {
             if (item.alreadyOpen)
             {
                 Debug.WriteLine("already open");
                 //find the right tab and set selecteditem
-                foreach(TabViewItem tab in tabsView.TabItems)
+                foreach (TabViewItem tabItem in tabsView.TabItems)
                 {
-                    DocumentTab temp = (DocumentTab)tab.Content;
+                    DocumentTab temp = (DocumentTab)tabItem.Content;
                     Debug.WriteLine("checking tab");
-                    if (ReferenceEquals(temp, item.tab))
+                    if (ReferenceEquals(temp, item.tabPage))
                     {
                         Debug.WriteLine("found tab match");
-                        dt = temp;
-                        tabsView.SelectedItem = tab;
+                        tab = temp;
+                        tabsView.SelectedItem = tabItem;
                         break;
                     }
                 }
 
-            } else
+            }
+            else
             {
-                TabViewItem tab = new TabViewItem();
-                tab.Header = item.file.DisplayName;
-                tab.IconSource = new SymbolIconSource() { Symbol = Symbol.Document };
-                dt = new DocumentTab(item);
-                tab.Content = dt;
+                TabViewItem tabItem = new TabViewItem();
+                tabItem.Header = item.file.DisplayName;
+                tabItem.IconSource = new SymbolIconSource() { Symbol = Symbol.Document };
+                tab = new DocumentTab(item);
+                tab.Content = tab;
                 item.alreadyOpen = true;
 
-                tabsView.TabItems.Add(tab);
-                tabsView.SelectedItem = tab;
+                tabsView.TabItems.Add(tabItem);
+                tabsView.SelectedItem = tabItem;
             }
+        }
 
 
-            return dt;
+        internal void OpenProfileTab()
+        {
+
         }
     }
 }

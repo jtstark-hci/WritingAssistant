@@ -19,19 +19,19 @@ using Windows.Storage;
 
 namespace WritingAssistant
 {
-    public sealed partial class FileListItem : UserControl
+    public partial class StoryFileListItem : UserControl
     {
         internal StorageFile file;
         EditorPage page;
         internal bool alreadyOpen = false;
-        internal DocumentTab tab;
+        internal Page tabPage;
 
-        public FileListItem()
+        public StoryFileListItem()
         {
             this.InitializeComponent();
         }
 
-        public FileListItem(StorageFile f, EditorPage p)
+        public StoryFileListItem(StorageFile f, EditorPage p)
         {
             this.InitializeComponent();
             file = f;
@@ -40,9 +40,9 @@ namespace WritingAssistant
 
         }
 
-        private void FileListItem_Click(object sender, RoutedEventArgs e)
+        public void FileListItem_Click(object sender, RoutedEventArgs e)
         {
-            tab = page.OpenTab(this);
+            tabPage = page.OpenTab(this);
         }
 
         public void ChangeFileName(string name)
@@ -55,17 +55,17 @@ namespace WritingAssistant
             
         }
 
-        private void FlyoutCopy_Click(object sender, RoutedEventArgs e)
+        public void FlyoutCopy_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void FlyoutDelete_Click(object sender, RoutedEventArgs e)
+        public void FlyoutDelete_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void FlyoutRename_Click(object sender, RoutedEventArgs e)
+        public void FlyoutRename_Click(object sender, RoutedEventArgs e)
         {
 
         }

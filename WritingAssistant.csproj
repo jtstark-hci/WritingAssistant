@@ -15,8 +15,8 @@
     <None Remove="DocumentTab.xaml" />
     <None Remove="EditorPage.xaml" />
     <None Remove="EntryPage.xaml" />
-    <None Remove="FileListItem.xaml" />
     <None Remove="ProjectLoadCard.xaml" />
+    <None Remove="StoryFileListItem.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +46,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="FileListItem.xaml">
+    <Page Update="StoryFileListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

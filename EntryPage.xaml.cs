@@ -117,7 +117,7 @@ namespace WritingAssistant
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             project = new UserProject(projNameEntry.Text, filesList);
-            Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            Frame.Navigate(typeof(EditorPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             Debug.WriteLine("opening project (with file)");
         }
 
@@ -140,7 +140,7 @@ namespace WritingAssistant
 
             project = new UserProject(projNameEntry.Text, tempFilesList);
 
-            Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            Frame.Navigate(typeof(EditorPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             Debug.WriteLine("opening project");
         }
 

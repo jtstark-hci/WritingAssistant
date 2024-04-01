@@ -22,7 +22,7 @@ namespace WritingAssistant
     public sealed partial class FileListItem : UserControl
     {
         internal StorageFile file;
-        DocPage page;
+        EditorPage page;
         internal bool alreadyOpen = false;
         internal DocumentTab tab;
 
@@ -31,7 +31,7 @@ namespace WritingAssistant
             this.InitializeComponent();
         }
 
-        public FileListItem(StorageFile f, DocPage p)
+        public FileListItem(StorageFile f, EditorPage p)
         {
             this.InitializeComponent();
             file = f;

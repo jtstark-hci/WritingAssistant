@@ -53,7 +53,7 @@ namespace WritingAssistant
 
             if (project != null)
             {
-                page.Frame.Navigate(typeof(DocPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                page.Frame.Navigate(typeof(EditorPage), project, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             
         }

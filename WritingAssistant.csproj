@@ -12,8 +12,8 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="DocPage.xaml" />
     <None Remove="DocumentTab.xaml" />
+    <None Remove="EditorPage.xaml" />
     <None Remove="EntryPage.xaml" />
     <None Remove="FileListItem.xaml" />
     <None Remove="ProjectLoadCard.xaml" />
@@ -61,7 +61,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DocPage.xaml">
+    <Page Update="EditorPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

@@ -232,7 +232,7 @@ namespace WritingAssistant
 
         internal static void UserControlNavigationHelper()
         {
-            (m_window.Content as Frame).Navigate(typeof(DocPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            (m_window.Content as Frame).Navigate(typeof(EditorPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
 

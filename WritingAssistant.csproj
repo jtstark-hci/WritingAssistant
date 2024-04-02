@@ -15,6 +15,8 @@
     <None Remove="DocumentTab.xaml" />
     <None Remove="EditorPage.xaml" />
     <None Remove="EntryPage.xaml" />
+    <None Remove="ProfileListItem.xaml" />
+    <None Remove="ProfileTab.xaml" />
     <None Remove="ProjectLoadCard.xaml" />
     <None Remove="StoryFileListItem.xaml" />
   </ItemGroup>
@@ -44,6 +46,16 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ProfileTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ProfileListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="StoryFileListItem.xaml">

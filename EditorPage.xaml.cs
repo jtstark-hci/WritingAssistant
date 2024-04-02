@@ -70,6 +70,9 @@ namespace WritingAssistant
                     StoryFilesList.Children.Add(listItem);
 
                 }
+
+                ProfileListItem profileListItem = new ProfileListItem(new Profile(), this);
+                CharactersList.Children.Add(profileListItem);
             }
         }
 
@@ -148,36 +151,29 @@ namespace WritingAssistant
                 {
                     toClose.Close();
                 }
+            } else if (args.Tab.Content.GetType() == typeof(ProfileTab))
+            {
+                ProfileTab toClose = (ProfileTab)args.Tab.Content;
+                if (toClose != null)
+                {
+                    toClose.Close();
+                }
             }
 
             sender.TabItems.Remove(args.Tab);
         }
 
-        internal Page OpenTab(UserControl item)
+
+        internal DocumentTab OpenStoryDocTab(StoryFileListItem item)
         {
-            Page tab = null;
-            if (item is StoryFileListItem)
-            {
-                tab = (DocumentTab)item;
-                OpenStoryDocTab((StoryFileListItem)item, (DocumentTab)tab);
-            }
-
-
-
-
-            return tab;
-        }
-
-
-        internal void OpenStoryDocTab(StoryFileListItem item, DocumentTab tab)
-        {
+            DocumentTab tab = null;
             if (item.alreadyOpen)
             {
                 Debug.WriteLine("already open");
                 //find the right tab and set selecteditem
                 foreach (TabViewItem tabItem in tabsView.TabItems)
                 {
-                    DocumentTab temp = (DocumentTab)tabItem.Content;
+                    DocumentTab temp = (DocumentTab)tabItem.Content; //will break if there are profile tabs open
                     Debug.WriteLine("checking tab");
                     if (ReferenceEquals(temp, item.tabPage))
                     {
@@ -195,18 +191,54 @@ namespace WritingAssistant
                 tabItem.Header = item.file.DisplayName;
                 tabItem.IconSource = new SymbolIconSource() { Symbol = Symbol.Document };
                 tab = new DocumentTab(item);
-                tab.Content = tab;
+                tabItem.Content = tab;
                 item.alreadyOpen = true;
 
                 tabsView.TabItems.Add(tabItem);
                 tabsView.SelectedItem = tabItem;
             }
+
+            return tab;
         }
 
 
-        internal void OpenProfileTab()
+        internal ProfileTab OpenProfileTab(ProfileListItem item)
         {
+            ProfileTab tab = null;
+            if (item.alreadyOpen)
+            {
+                Debug.WriteLine("already open");
+                //find the right tab and set selecteditem
+                foreach (TabViewItem tabItem in tabsView.TabItems)
+                {
+                    ProfileTab temp = (ProfileTab)tabItem.Content; //breaks if there are doc tabs open
+                    Debug.WriteLine("checking tab");
+                    if (ReferenceEquals(temp, item.tabPage))
+                    {
+                        Debug.WriteLine("found tab match");
+                        tab = temp;
+                        tabsView.SelectedItem = tabItem;
+                        break;
+                    }
+                }
 
+            }
+            else
+            {
+                TabViewItem tabItem = new TabViewItem();
+                tabItem.Header = "temp";
+                tabItem.IconSource = new SymbolIconSource() { Symbol = Symbol.Document };
+                tab = new ProfileTab(item);
+                
+                tab.LoadProfile(item.profile);
+                tabItem.Content = tab;
+                item.alreadyOpen = true;
+
+                tabsView.TabItems.Add(tabItem);
+                tabsView.SelectedItem = tabItem;
+            }
+
+            return tab;
         }
     }
 }

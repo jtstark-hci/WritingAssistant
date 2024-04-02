@@ -24,7 +24,7 @@ namespace WritingAssistant
         internal StorageFile file;
         EditorPage page;
         internal bool alreadyOpen = false;
-        internal Page tabPage;
+        internal DocumentTab tabPage;
 
         public StoryFileListItem()
         {
@@ -42,7 +42,7 @@ namespace WritingAssistant
 
         public void FileListItem_Click(object sender, RoutedEventArgs e)
         {
-            tabPage = page.OpenTab(this);
+            tabPage = page.OpenStoryDocTab(this);
         }
 
         public void ChangeFileName(string name)

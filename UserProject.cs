@@ -24,7 +24,7 @@ namespace WritingAssistant
         public string Name { get; set; } = "";
         public List<Comment> Comments { get; } = null;
         public List<StorageFile> StoryFiles { get; set; } = new List<StorageFile>();
-        public List<Profile> Profiles { get; } = null;
+        public List<Profile> Profiles { get; } = new List<Profile>();
 
         //TO ADD:
         //notifications list
@@ -44,6 +44,8 @@ namespace WritingAssistant
         {
             Name = name;
             StoryFiles = files;
+            Profiles.Add(new Profile());
+
             App.SaveNewProject(this);
 
         }

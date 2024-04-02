@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="WritingAssistant.ProfileListItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WritingAssistant"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Button Grid.Row="3" HorizontalAlignment="Stretch" Height="28" Margin="24,0,0,0" Padding="0" HorizontalContentAlignment="Stretch" BorderThickness="0" Click="ProfileListItem_Click">
+        <RelativePanel HorizontalAlignment="Stretch">
+            <TextBlock x:Name="charName" Style="{ThemeResource CaptionTextBlockStyle}" RelativePanel.AlignLeftWithPanel="True" Margin="5"></TextBlock>
+            <Button x:Name="ListItemFlyout" Height="28" Width="Auto" BorderThickness="0" Background="Transparent" RelativePanel.AlignRightWithPanel="True">
+                <Button.Content>
+                    <FontIcon FontSize="16" Glyph="&#xE712;" />
+                </Button.Content>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Copy" Icon="Copy" Click="FlyoutCopy_Click"/>
+                        <MenuFlyoutItem Text="Delete" Icon="Delete" Click="FlyoutDelete_Click"/>
+                        <MenuFlyoutItem Text="Rename" Icon="Edit" Click="FlyoutRename_Click"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+
+            </Button>
+        </RelativePanel>
+    </Button>
+</UserControl>

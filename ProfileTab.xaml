@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WritingAssistant.ProfileTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WritingAssistant"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <RelativePanel Grid.Row="0" Margin="0,12,0,12">
+            <RelativePanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                </Style>
+            </RelativePanel.Resources>
+
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" x:Name="charName" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <Button RelativePanel.RightOf="charName" AutomationProperties.Name="Edit name" ToolTipService.ToolTip="Edit name" Margin="0,4,0,0">
+                <FontIcon Glyph="&#xE70F;" FontSize="18"/>
+                <Button.Flyout>
+                    <Flyout x:Name="editNameFlyout">
+                        <StackPanel>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Edit character name" Margin="0,0,0,12"/>
+                            <TextBox x:Name="nameEditBox" Width="256"></TextBox>
+                            <RelativePanel HorizontalAlignment="Stretch">
+                                <Button AutomationProperties.Name="Cancel" ToolTipService.ToolTip="Cancel" Click="NameCancelButton_Click" RelativePanel.AlignLeftWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE711;"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button AutomationProperties.Name="Confirm" ToolTipService.ToolTip="Confirm" Click="NameConfirmButton_Click" RelativePanel.AlignRightWithPanel="True" >
+                                    <Button.Content>
+                                        <FontIcon Glyph="&#xE73E;"/>
+                                    </Button.Content>
+                                </Button>
+                            </RelativePanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </RelativePanel>
+
+        <ScrollViewer Grid.Row="1">
+            <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Height="Auto" x:Name="tempBlock"></TextBlock>
+        </ScrollViewer>
+
+
+    </Grid>
+</Page>

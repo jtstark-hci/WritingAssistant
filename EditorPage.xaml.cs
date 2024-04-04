@@ -90,13 +90,19 @@ namespace WritingAssistant
             {
                 foreach(TabViewItem tab in tabsView.TabItems)
                 {
-                    DocumentTab dt = (DocumentTab)tab.Content;
-                    StorageFile file = dt.GetFileListItem().file;
-
-                    using (IRandomAccessStream randAccStream =
-                    await file.OpenAsync(FileAccessMode.ReadWrite))
+                    if (tab.Content.GetType() == typeof(DocumentTab))
                     {
-                        dt.GetEditor().Document.SaveToStream(TextGetOptions.FormatRtf, randAccStream);
+                        DocumentTab dt = (DocumentTab)tab.Content;
+                        StorageFile file = dt.GetFileListItem().file;
+
+                        using (IRandomAccessStream randAccStream =
+                        await file.OpenAsync(FileAccessMode.ReadWrite))
+                        {
+                            dt.GetEditor().Document.SaveToStream(TextGetOptions.FormatRtf, randAccStream);
+                        }
+                    } else if (tab.Content.GetType() == typeof(ProfileTab))
+                    {
+                        //save the profile
                     }
                 }
             }
